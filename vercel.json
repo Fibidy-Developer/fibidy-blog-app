@@ -1,13 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "framework": "nextjs",
-  "rootDirectory": "apps/front",
   "rewrites": [
     {
-      "source": "/api/:path*",
+      "source": "/api/:path*", 
       "destination": "https://fibidy-blog-app-production.up.railway.app/:path*"
     }
   ]
