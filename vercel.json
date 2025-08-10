@@ -1,10 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd apps/front && npm run build",
-  "devCommand": "cd apps/front && npm run dev",
-  "installCommand": "cd apps/front && npm install",
-  "outputDirectory": "apps/front/.next",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
   "framework": "nextjs",
+  "rootDirectory": "apps/front",
   "rewrites": [
     {
       "source": "/api/:path*",
