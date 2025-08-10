@@ -2,11 +2,23 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "db:generate": {
-      "cache": false
+      "cache": false,
+      "inputs": ["apps/api/prisma/**"]
     },
     "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "inputs": ["src/**", "app/**", "pages/**", "components/**", "lib/**", "styles/**", "public/**", "next.config.*", "tailwind.config.*", "tsconfig.json", "package.json"]
+    },
+    "build:api": {
       "dependsOn": ["^build", "db:generate"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**"],
+      "inputs": ["apps/api/src/**", "apps/api/prisma/**", "apps/api/nest-cli.json", "apps/api/tsconfig.json", "apps/api/package.json"]
+    },
+    "build:front": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "inputs": ["apps/front/src/**", "apps/front/app/**", "apps/front/pages/**", "apps/front/components/**", "apps/front/lib/**", "apps/front/styles/**", "apps/front/public/**", "apps/front/next.config.*", "apps/front/tailwind.config.*", "apps/front/tsconfig.json", "apps/front/package.json"]
     },
     "start": {
       "dependsOn": ["build"],
@@ -18,11 +30,42 @@
       "cache": false,
       "persistent": true
     },
-    "lint": {},
+    "lint": {
+      "inputs": ["src/**", "app/**", "pages/**", "components/**", "lib/**", "*.config.*", "package.json"]
+    },
+    "lint:api": {
+      "inputs": ["apps/api/src/**", "apps/api/test/**", "apps/api/*.config.*", "apps/api/package.json"]
+    },
+    "lint:front": {
+      "inputs": ["apps/front/src/**", "apps/front/app/**", "apps/front/pages/**", "apps/front/components/**", "apps/front/lib/**", "apps/front/*.config.*", "apps/front/package.json"]
+    },
     "dev": {
+      "cache": false,
+      "persistent": true,
+      "inputs": ["src/**", "app/**", "pages/**", "components/**", "lib/**", "styles/**", "public/**", "*.config.*", "package.json"]
+    },
+    "dev:api": {
       "dependsOn": ["db:generate"],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "inputs": ["apps/api/src/**", "apps/api/prisma/**", "apps/api/*.config.*", "apps/api/package.json"]
+    },
+    "dev:front": {
+      "cache": false,
+      "persistent": true,
+      "inputs": ["apps/front/src/**", "apps/front/app/**", "apps/front/pages/**", "apps/front/components/**", "apps/front/lib/**", "apps/front/styles/**", "apps/front/public/**", "apps/front/*.config.*", "apps/front/package.json"]
+    },
+    "test": {
+      "inputs": ["src/**", "test/**", "*.config.*", "package.json"]
+    },
+    "test:api": {
+      "inputs": ["apps/api/src/**", "apps/api/test/**", "apps/api/*.config.*", "apps/api/package.json"]
+    },
+    "test:front": {
+      "inputs": ["apps/front/src/**", "apps/front/__tests__/**", "apps/front/*.config.*", "apps/front/package.json"]
+    },
+    "clean": {
+      "cache": false
     }
   }
 }
