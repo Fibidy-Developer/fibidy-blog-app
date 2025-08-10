@@ -2,13 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd apps/front && npm run build",
   "devCommand": "cd apps/front && npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "cd apps/front && npm install",
   "outputDirectory": "apps/front/.next",
   "framework": "nextjs",
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://your-railway-api-url.railway.app/:path*"
+      "destination": "https://fibidy-blog-app-production.up.railway.app/:path*"
     }
   ]
 }
