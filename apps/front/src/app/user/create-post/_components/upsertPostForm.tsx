@@ -16,7 +16,13 @@ type Props = {
 
 const UpsertPostForm = ({ state, formAction }: Props) => {
   const [imageUrl, setImageUrl] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
+
+  // Ensure component is mounted on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (state?.message) {
@@ -29,11 +35,23 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
 
   useEffect(() => {
     return () => {
-      if (imageUrl) {
+      // Only revoke URL if we're on client and URL exists
+      if (isMounted && imageUrl && typeof window !== 'undefined') {
         URL.revokeObjectURL(imageUrl);
       }
     };
-  }, [imageUrl]);
+  }, [imageUrl, isMounted]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only handle file changes on client side
+    if (typeof window === 'undefined') return;
+    
+    if (e.target.files?.[0]) {
+      const file = e.target.files[0];
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
+    }
+  };
 
   return (
     <form
@@ -41,9 +59,8 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
       className="flex flex-col gap-5 [&>div>label]:text-slate-500 [&>div>input]:transition [&>div>textarea]:transition"
     >
       {state?.data?.postId && (
-  <input hidden name="postId" defaultValue={state.data.postId} />
-)}
-
+        <input hidden name="postId" defaultValue={state.data.postId} />
+      )}
 
       {/* Title */}
       <div>
@@ -82,11 +99,7 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
           type="file"
           name="thumbnail"
           accept="image/*"
-          onChange={(e) => {
-            if (e.target.files?.[0]) {
-              setImageUrl(URL.createObjectURL(e.target.files[0]));
-            }
-          }}
+          onChange={handleFileChange}
         />
         {!!state?.errors?.thumbnail && (
           <p className="text-red-500 animate-shake">{state.errors.thumbnail}</p>
