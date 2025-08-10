@@ -5,10 +5,16 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "start": "cd apps/api && npm run start:prod",
+    "start": "turbo run start",
     "start:api": "cd apps/api && npm run start:prod",
     "start:front": "cd apps/front && npm start",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "db:generate": "cd apps/api && npm run db:generate",
+    "db:seed": "cd apps/api && npm run db:seed",
+    "db:migrate": "cd apps/api && npx prisma migrate dev",
+    "db:studio": "cd apps/api && npx prisma studio",
+    "clean": "turbo run clean",
+    "test": "turbo run test"
   },
   "packageManager": "npm@10.8.1",
   "workspaces": [
