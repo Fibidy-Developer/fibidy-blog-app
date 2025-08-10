@@ -67,12 +67,26 @@ export async function saveNewPost(
       data: Object.fromEntries(formData.entries()),
       errors: validatedFields.error.flatten().fieldErrors,
     };
+  
   let thumbnailUrl = "";
-  // Todo:Upload Thumbnail to supabase
-  if (validatedFields.data.thumbnail)
-    thumbnailUrl = await uploadThumbnail(validatedFields.data.thumbnail);
-
-  // Todo: call garphql api
+  
+  // Handle thumbnail upload safely
+  if (validatedFields.data.thumbnail) {
+    try {
+      // Convert to buffer/blob for server-side upload
+      const file = validatedFields.data.thumbnail;
+      const arrayBuffer = await file.arrayBuffer();
+      const blob = new Blob([arrayBuffer], { type: file.type });
+      
+      thumbnailUrl = await uploadThumbnail(blob);
+    } catch (error) {
+      console.error('Thumbnail upload failed:', error);
+      return {
+        message: "Failed to upload thumbnail",
+        data: Object.fromEntries(formData.entries()),
+      };
+    }
+  }
 
   const data = await authFetchGraphQL(print(CREATE_POST_MUTATION), {
     input: {
@@ -102,12 +116,25 @@ export async function updatePost(
       errors: validatedFields.error.flatten().fieldErrors,
     };
 
-  // Todo: check if thumbnail has been changed
   const { thumbnail, ...inputs } = validatedFields.data;
 
   let thumbnailUrl = "";
-  // Todo:Upload Thumbnail to supabase
-  if (thumbnail) thumbnailUrl = await uploadThumbnail(thumbnail);
+  
+  // Handle thumbnail upload safely
+  if (thumbnail) {
+    try {
+      const arrayBuffer = await thumbnail.arrayBuffer();
+      const blob = new Blob([arrayBuffer], { type: thumbnail.type });
+      
+      thumbnailUrl = await uploadThumbnail(blob);
+    } catch (error) {
+      console.error('Thumbnail upload failed:', error);
+      return {
+        message: "Failed to upload thumbnail",
+        data: Object.fromEntries(formData.entries()),
+      };
+    }
+  }
 
   const data = await authFetchGraphQL(print(UPDATE_POST_MUTATION), {
     input: {
