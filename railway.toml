@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+# Deploy API NestJS ke Railway
+startCommand = "cd apps/api && npm run start:prod"
+
+# Alternative dengan turbo (pilih salah satu):
+# startCommand = "turbo run start:prod --filter=api"

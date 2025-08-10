@@ -1,9 +1,21 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "strict": true,
+    "useUnknownInCatchVariables": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["apps/api/*"],
-      "@front/*": ["apps/front/*"]
+      "@api/*": ["apps/api/src/*"],
+      "@front/*": ["apps/front/src/*"],
+      "@front/components/*": ["apps/front/src/components/*"],
+      "@front/lib/*": ["apps/front/src/lib/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "**/node_modules", "**/dist", "**/.next"]
 }

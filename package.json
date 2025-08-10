@@ -2,9 +2,12 @@
   "name": "blog-turborepo",
   "version": "1.0.0",
   "main": "index.js",
-"scripts": {
+  "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "start": "cd apps/api && npm run start:prod",
+    "start:api": "cd apps/api && npm run start:prod",
+    "start:front": "cd apps/front && npm start",
     "lint": "turbo run lint"
   },
   "packageManager": "npm@10.8.1",
