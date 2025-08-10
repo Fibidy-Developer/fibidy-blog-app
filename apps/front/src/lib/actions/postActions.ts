@@ -70,15 +70,10 @@ export async function saveNewPost(
   
   let thumbnailUrl = "";
   
-  // Handle thumbnail upload safely
-  if (validatedFields.data.thumbnail) {
+  // Handle thumbnail upload
+  if (validatedFields.data.thumbnail && validatedFields.data.thumbnail.size > 0) {
     try {
-      // Convert to buffer/blob for server-side upload
-      const file = validatedFields.data.thumbnail;
-      const arrayBuffer = await file.arrayBuffer();
-      const blob = new Blob([arrayBuffer], { type: file.type });
-      
-      thumbnailUrl = await uploadThumbnail(blob);
+      thumbnailUrl = await uploadThumbnail(validatedFields.data.thumbnail);
     } catch (error) {
       console.error('Thumbnail upload failed:', error);
       return {
@@ -90,7 +85,10 @@ export async function saveNewPost(
 
   const data = await authFetchGraphQL(print(CREATE_POST_MUTATION), {
     input: {
-      ...validatedFields.data,
+      title: validatedFields.data.title,
+      content: validatedFields.data.content,
+      published: validatedFields.data.published,
+      tags: validatedFields.data.tags,
       thumbnail: thumbnailUrl,
     },
   });
@@ -120,13 +118,10 @@ export async function updatePost(
 
   let thumbnailUrl = "";
   
-  // Handle thumbnail upload safely
-  if (thumbnail) {
+  // Handle thumbnail upload
+  if (thumbnail && thumbnail.size > 0) {
     try {
-      const arrayBuffer = await thumbnail.arrayBuffer();
-      const blob = new Blob([arrayBuffer], { type: thumbnail.type });
-      
-      thumbnailUrl = await uploadThumbnail(blob);
+      thumbnailUrl = await uploadThumbnail(thumbnail);
     } catch (error) {
       console.error('Thumbnail upload failed:', error);
       return {
