@@ -10,7 +10,7 @@ export default function HomePage() {
           FIBIDY <span className="text-blue-600">BLOG APP</span>
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          Share your thoughts and connect with writers worldwide
+          Share your thoughts and connect with writers
         </p>
         <div className="flex gap-4 justify-center">
           <Link
