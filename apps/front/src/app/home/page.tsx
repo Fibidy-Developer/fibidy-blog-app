@@ -7,6 +7,7 @@ export default function HomePage() {
       {/* Hero Section - Simplified */}
       <main className="max-w-4xl mx-auto px-4 text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            
           FIBIDY <span className="text-blue-600">BLOG APP</span>
         </h1>
         <p className="text-xl text-gray-600 mb-8">
