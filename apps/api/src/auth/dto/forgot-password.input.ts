@@ -1,0 +1,11 @@
+// src/auth/dto/forgot-password.input.ts
+import { InputType, Field } from '@nestjs/graphql';
+import { IsEmail, IsNotEmpty } from 'class-validator';
+
+@InputType()
+export class ForgotPasswordInput {
+  @Field(() => String, { description: 'User email address' })
+  @IsEmail({}, { message: 'Please provide a valid email address' })
+  @IsNotEmpty({ message: 'Email is required' })
+  email: string;
+}
