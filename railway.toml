@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm install && cd apps/api && npm install && npx prisma generate && npx nest build && echo 'Build completed, checking files:' && ls -la && ls -la dist/"
+buildCommand = "cd apps/api && npm install && npx prisma generate && npx @nestjs/cli build"
 
 [deploy]
-startCommand = "cd apps/api && echo 'Starting app, current directory:' && pwd && echo 'Files available:' && ls -la dist/ && node dist/main.js"
+startCommand = "cd apps/api && node dist/main.js"
